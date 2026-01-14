@@ -1,0 +1,16 @@
+Ligand,SMILES,SDF_File,SDF_Path
+Curdione,CC1CCC=C(CC(=O)C(CC1=O)C(C)C)C,Curdione.sdf,Ezhu_HCC_Project/data/references/docking/ligands_sdf/Curdione.sdf
+Eucalyptol,CC1(C2CCC(O1)(CC2)C)C,Eucalyptol.sdf,Ezhu_HCC_Project/data/references/docking/ligands_sdf/Eucalyptol.sdf
+"(1s,3e,7e,11s)-1,5,5,8-tetramethyl-12-oxabicyclo[9.1.0]dodeca-3,7-diene",CC1=CCC(C=CCC2(C(O2)CC1)C)(C)C,1s_3e_7e_11s_-1_5_5_8-tetramethyl-12-oxabicyclo_9.1.0_dodeca-3_7-diene.sdf,Ezhu_HCC_Project/data/references/docking/ligands_sdf/1s_3e_7e_11s_-1_5_5_8-tetramethyl-12-oxabicyclo_9.1.0_dodeca-3_7-diene.sdf
+(-)-Sabinene,CC(C)C12CCC(=C)C1C2,-_-Sabinene.sdf,Ezhu_HCC_Project/data/references/docking/ligands_sdf/-_-Sabinene.sdf
+Curcumenone,CC(=C1CC2C(C2(CC1=O)C)CCC(=O)C)C,Curcumenone.sdf,Ezhu_HCC_Project/data/references/docking/ligands_sdf/Curcumenone.sdf
+"(2S)-3',4'-Methylenedioxy-5,7-dimethoxyflavan",COC1=CC2=C(CCC(O2)C3=CC4=C(C=C3)OCO4)C(=C1)OC,2S_-3_4_-Methylenedioxy-5_7-dimethoxyflavan.sdf,Ezhu_HCC_Project/data/references/docking/ligands_sdf/2S_-3_4_-Methylenedioxy-5_7-dimethoxyflavan.sdf
+Nonan-2-one,CCCCCCCC(=O)C,Nonan-2-one.sdf,Ezhu_HCC_Project/data/references/docking/ligands_sdf/Nonan-2-one.sdf
+(S)-(+)-2-Heptanol,CCCCCC(C)O,S_-_-2-Heptanol.sdf,Ezhu_HCC_Project/data/references/docking/ligands_sdf/S_-_-2-Heptanol.sdf
+Undecan-2-one,CCCCCCCCCC(=O)C,Undecan-2-one.sdf,Ezhu_HCC_Project/data/references/docking/ligands_sdf/Undecan-2-one.sdf
+Aerugidiol,CC1=CC(=O)C(=C(C)C)CC2C1(CCC2(C)O)O,Aerugidiol.sdf,Ezhu_HCC_Project/data/references/docking/ligands_sdf/Aerugidiol.sdf
+"(3s,4r)-3-isopropenyl-1-isopropyl-4-methyl-4-vinylcyclohexene",CC(C)C1=CC(C(CC1)(C)C=C)C(=C)C,3s_4r_-3-isopropenyl-1-isopropyl-4-methyl-4-vinylcyclohexene.sdf,Ezhu_HCC_Project/data/references/docking/ligands_sdf/3s_4r_-3-isopropenyl-1-isopropyl-4-methyl-4-vinylcyclohexene.sdf
+(-)-Isoledene,CC1CCC2C(C2(C)C)C3=C1CCC3C,-_-Isoledene.sdf,Ezhu_HCC_Project/data/references/docking/ligands_sdf/-_-Isoledene.sdf
+Furanodiene,CC1=CCC2=C(CC(=CCC1)C)OC=C2C,Furanodiene.sdf,Ezhu_HCC_Project/data/references/docking/ligands_sdf/Furanodiene.sdf
+Curzerenone,CC1=COC2=C1C(=O)C(C(C2)(C)C=C)C(=C)C,Curzerenone.sdf,Ezhu_HCC_Project/data/references/docking/ligands_sdf/Curzerenone.sdf
+(+)-alpha-thujene,CC1=CCC2(C1C2)C(C)C,-alpha-thujene.sdf,Ezhu_HCC_Project/data/references/docking/ligands_sdf/-alpha-thujene.sdf

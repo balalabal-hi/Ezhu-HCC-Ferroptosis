@@ -1,0 +1,27 @@
+# OS / editor
+.DS_Store
+.vscode/
+
+# Secrets / local config
+.env
+*.key
+*.pem
+
+# Large raw inputs (not tracked)
+Ezhu_HCC_Project/data/raw/
+Ezhu_HCC_Project/GDCdata/
+
+# Large third-party references (not tracked)
+Ezhu_HCC_Project/data/references/GDSC/
+Ezhu_HCC_Project/data/references/raw/
+
+# Optional local caches / API responses
+Ezhu_HCC_Project/results/boltz2_responses/
+Ezhu_HCC_Project/results/boltz2_failures/
+
+# Local R / Python artifacts
+*.Rhistory
+*.RData
+__pycache__/
+*.pyc
+
