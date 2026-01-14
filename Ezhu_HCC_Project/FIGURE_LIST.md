@@ -9,7 +9,7 @@
 
 | 图号 | 文件名 | 内容 | 状态 |
 |------|--------|------|------|
-| Figure 1 | figure1.jpeg | 研究流程示意图 | 需更新 |
+| Figure 1 | figure1.jpeg | 研究流程示意图（生成提示词见 `docs/figure1-generation-prompt.md`） | 需更新 |
 | Figure 2 | Figure2_DEG_analysis.pdf | DEG分析 (火山图+Venn图+Hub基因表达) | 已更新 |
 | Figure 3 | Figure3_prognostic_model.pdf | 预后模型 (KM曲线+ROC+Risk Score+系数) | 已更新 |
 | Figure 4 | Figure4_clinical_utility.pdf | 临床应用 (单/多因素Cox+DCA+C-index) | 已更新 |
