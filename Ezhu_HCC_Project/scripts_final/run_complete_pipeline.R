@@ -41,6 +41,9 @@ source("scripts_final/02c_prognostic_model_ezhu.R")
 source("scripts_final/02d_nomogram_calibration_dca.R")
 source("scripts_final/02e_external_validation.R")
 source("scripts_final/02f_mvi_validation.R")
+if (file.exists("scripts_final/02h_model_diagnostics.R")) {
+  source("scripts_final/02h_model_diagnostics.R")
+}
 
 # ============================================================================
 # Stage 3: 免疫微环境分析

@@ -31,3 +31,5 @@ Expected outputs:
 - `plots/publication/` (Figure 2–6)
 - `plots/supplementary/` (supplementary panels)
 
+Optional (Supplementary robustness checks):
+- `Rscript scripts_final/02h_model_diagnostics.R`

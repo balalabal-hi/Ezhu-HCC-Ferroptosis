@@ -1,7 +1,7 @@
 #!/usr/bin/env Rscript
 
 # 02e_external_validation.R
-# 外部验证：TCGA-LIHC + GSE76427 + GSE10143
+# 外部验证：TCGA-LIHC + GSE76427 + GSE10143 + (可选) GSE27150
 # 输出：risk score、外部验证统计表、可选图版
 
 # 禁用交互式图形设备
@@ -468,13 +468,67 @@ val_10143_frozen <- data.frame(
 val_10143_frozen <- val_10143_frozen %>% filter(!is.na(time_months), !is.na(status))
 res_10143_frozen <- summarize_validation_dualcut(val_10143_frozen, "GSE10143-HCC", train_cutoff)
 
-stats <- bind_rows(res_tcga$stats, res_76427$stats, res_10143$stats)
+# Optional external cohort: GSE27150 (two-channel microarray; log2(Red/Green) ratio)
+message("[外部验证] 开始 GSE27150 验证 (two-channel log2 ratio)...")
+expr_27150_path <- file.path(proc_dir, "GSE27150_expr_symbol.rds")
+clin_27150_path <- file.path(proc_dir, "GSE27150_clinical.rds")
+
+if (!file.exists(expr_27150_path) || !file.exists(clin_27150_path)) {
+  gse <- getGEO("GSE27150", GSEMatrix = TRUE, getGPL = FALSE)[[1]]
+  expr_raw <- exprs(gse)
+  # fData in GSE27150 matrix is empty; map via GPL
+  expr_avg <- map_expression_with_gpl(expr_raw, "GPL13128")
+  expr_avg <- maybe_log2p1(expr_avg)
+
+  pheno <- pData(gse)
+  # survival columns are already provided as "survival time:ch1" and "status (1-death,0-survival):ch1"
+  if (!("survival time:ch1" %in% colnames(pheno)) || !("status (1-death,0-survival):ch1" %in% colnames(pheno))) {
+    stop("GSE27150 缺少 survival time/status 字段，无法用于外部验证")
+  }
+  pheno$time_months <- suppressWarnings(as.numeric(pheno[["survival time:ch1"]]))
+  pheno$status <- suppressWarnings(as.numeric(pheno[["status (1-death,0-survival):ch1"]]))
+  rownames(pheno) <- rownames(pData(gse))
+
+  saveRDS(expr_avg, expr_27150_path)
+  saveRDS(pheno, clin_27150_path)
+}
+
+expr_27150 <- readRDS(expr_27150_path)
+clin_27150 <- readRDS(clin_27150_path)
+
+common_samples <- intersect(colnames(expr_27150), rownames(clin_27150))
+expr_27150 <- expr_27150[, common_samples, drop = FALSE]
+clin_27150 <- clin_27150[common_samples, , drop = FALSE]
+
+risk_27150 <- calc_risk_score(zscore_by_gene(expr_27150), coef_vec)
+val_27150 <- data.frame(
+  sample_id = names(risk_27150),
+  risk_score = as.numeric(risk_27150),
+  time_months = as.numeric(clin_27150$time_months[match(names(risk_27150), rownames(clin_27150))]),
+  status = as.numeric(clin_27150$status[match(names(risk_27150), rownames(clin_27150))])
+)
+val_27150 <- val_27150 %>% filter(!is.na(time_months), !is.na(status))
+write.csv(val_27150, file.path(res_dir, "GSE27150_risk_score.csv"), row.names = FALSE)
+res_27150 <- summarize_validation(val_27150, "GSE27150")
+
+risk_27150_frozen <- calc_risk_score(zscore_by_train(expr_27150, scaler), coef_vec)
+val_27150_frozen <- data.frame(
+  sample_id = names(risk_27150_frozen),
+  risk_score = as.numeric(risk_27150_frozen),
+  time_months = as.numeric(clin_27150$time_months[match(names(risk_27150_frozen), rownames(clin_27150))]),
+  status = as.numeric(clin_27150$status[match(names(risk_27150_frozen), rownames(clin_27150))])
+)
+val_27150_frozen <- val_27150_frozen %>% filter(!is.na(time_months), !is.na(status))
+res_27150_frozen <- summarize_validation_dualcut(val_27150_frozen, "GSE27150", train_cutoff)
+
+stats <- bind_rows(res_tcga$stats, res_76427$stats, res_10143$stats, res_27150$stats)
 write.csv(stats, file.path(res_dir, "external_validation_stats.csv"), row.names = FALSE)
 
 stats_frozen <- bind_rows(
   transform(res_tcga_frozen$stats, Scaling = "Train-frozen"),
   transform(res_76427_frozen$stats, Scaling = "Train-frozen"),
-  transform(res_10143_frozen$stats, Scaling = "Train-frozen")
+  transform(res_10143_frozen$stats, Scaling = "Train-frozen"),
+  transform(res_27150_frozen$stats, Scaling = "Train-frozen")
 )
 write.csv(stats_frozen, file.path(res_dir, "external_validation_stats_frozen_scaling.csv"), row.names = FALSE)
 write.csv(stats_frozen, file.path(res_dir, "Supplementary_Table_ExternalValidation_FrozenScaling.csv"), row.names = FALSE)
@@ -488,19 +542,24 @@ p_76427_roc <- plot_roc(res_76427$data, res_76427$roc, "GSE76427 ROC")
 p_10143_km <- plot_km(res_10143$data, "GSE10143-HCC")
 p_10143_roc <- plot_roc(res_10143$data, res_10143$roc, "GSE10143-HCC ROC")
 
+p_27150_km <- plot_km(res_27150$data, "GSE27150 (log2 ratio)")
+p_27150_roc <- plot_roc(res_27150$data, res_27150$roc, "GSE27150 ROC")
+
 fig <- plot_grid(
   p_tcga_km, p_tcga_roc,
   p_76427_km, p_76427_roc,
   p_10143_km, p_10143_roc,
+  p_27150_km, p_27150_roc,
   ncol = 2,
-  labels = c("A", "B", "C", "D", "E", "F")
+  labels = c("A", "B", "C", "D", "E", "F", "G", "H")
 )
 
-ggsave(file.path(plot_dir, "FigureS_external_validation.pdf"), fig, width = 12, height = 13)
+ggsave(file.path(plot_dir, "FigureS_external_validation.pdf"), fig, width = 12, height = 17)
 
 message("[外部验证] 完成")
-message("  - results/TCGA_LIHC_risk_score.csv")
-message("  - results/GSE76427_risk_score.csv")
-message("  - results/GSE10143_HCC_risk_score.csv")
-message("  - results/external_validation_stats.csv")
-message("  - plots/supplementary/FigureS_external_validation.pdf")
+message("  ✅ results/TCGA_LIHC_risk_score.csv")
+message("  ✅ results/GSE76427_risk_score.csv")
+message("  ✅ results/GSE10143_HCC_risk_score.csv")
+message("  ✅ results/GSE27150_risk_score.csv")
+message("  ✅ results/external_validation_stats.csv")
+message("  ✅ plots/supplementary/FigureS_external_validation.pdf")

@@ -14,6 +14,7 @@ Primary discovery cohort:
 External validation cohorts:
 - **GSE76427**
 - **GSE10143**
+- **GSE27150** (two-channel microarray; expression is a log2 ratio and should be interpreted cautiously)
 
 Recommended workflow:
 - Follow the manifest in `Ezhu_HCC_Project/DATA_MANIFEST.md`.

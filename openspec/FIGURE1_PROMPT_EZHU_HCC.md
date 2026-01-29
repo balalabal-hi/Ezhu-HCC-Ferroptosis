@@ -1,10 +1,11 @@
-# Figure 1 generation prompt (Ezhu–HCC)
+# Figure 1 生成提示词（Ezhu–HCC 项目，投稿图 1）
 
-This prompt was used as a starting point to generate a vector-style workflow schematic (Figure 1) consistent with the analysis pipeline and the terminology used in Figures 2–6.
+> 用途：在需要重新生成/返修 Figure 1（机制流程图/graphical abstract）时，直接复制本提示词到生图模型。
+> 约束：必须与本项目 Figure 2–6 的口径一致；不得引入未纳入主线的模块（例如 GO/KEGG、WGCNA、CHB、网络药理学拓扑等）。
 
-Prompt version: 2026-01-29 (updated external cohort list incl. GSE27150; added model diagnostics/RMST as robustness notes).
+**Prompt version:** 2026-01-29 (updated external cohort list incl. GSE27150; added model diagnostics/RMST as robustness notes).
 
-## Prompt (English, copy-paste)
+## Prompt（English, copy-paste）
 
 Create a clean, publication-quality **vector-style workflow schematic (Figure 1)** for an SCI paper.  
 Topic: *Curcuma phaeocaulis* (Ezhu)–anchored ferroptosis landscape and prognostic modeling in hepatocellular carcinoma (HCC).
@@ -59,7 +60,8 @@ Topic: *Curcuma phaeocaulis* (Ezhu)–anchored ferroptosis landscape and prognos
 - Ensure all text is spelled correctly and concise; avoid any claims like “proved therapeutic effect”.
 - **Do NOT include** GO/KEGG, WGCNA, CHB datasets, network pharmacology topology, or any unused modules.
 
-## Checklist
-- Datasets mentioned: GSE14520, TCGA-LIHC, GSE76427, GSE10143-HCC, GSE27150, PMC8692135 S2 (MVI supplement).
-- Immune cell types: **28**; strict intersection: **5**; expanded panel: **11**; signature: **9-gene**.
-- Avoid any modules not used in the main pipeline.
+## 输出检查（生成后人工核对清单）
+- 数据集必须仅出现：GSE14520、TCGA-LIHC、GSE76427、GSE10143-HCC、GSE27150、PMC8692135 S2（MVI补充）。
+- 免疫细胞类型写 **28**；交集数字写 **5**；扩展面板写 **11**；模型写 **9-gene**。
+- 稳健性/诊断模块只允许写：PH test、RMST（60 months）、random signature sanity check；不得扩展为复杂方法学章节。
+- 不得出现未纳入主线的模块名（GO/KEGG、WGCNA、CHB、network pharmacology 等）。
