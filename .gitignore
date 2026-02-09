@@ -10,6 +10,7 @@
 # Large raw inputs (not tracked)
 HCC_Ferroptosis_Project/data/raw/
 HCC_Ferroptosis_Project/GDCdata/
+HCC_Ferroptosis_Project/data/processed/
 
 # Large third-party references (not tracked)
 HCC_Ferroptosis_Project/data/references/GDSC/

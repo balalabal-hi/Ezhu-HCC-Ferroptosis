@@ -18,6 +18,7 @@ Use this mode to verify reported results from included outputs.
 
 3. Prepare raw/reference inputs:
 - Follow `DATA_MANIFEST.md` and `docs/data-acquisition.md`.
+- Download source datasets from official links listed in `docs/data-acquisition.md`.
 
 4. Run end-to-end pipeline:
 - `Rscript scripts_final/run_complete_pipeline.R`
@@ -26,6 +27,9 @@ Expected outputs:
 - `results/`
 - `plots/publication/`
 - `plots/supplementary/`
+
+Note:
+- `data/processed/` is generated locally during data preparation and is not tracked in Git.
 
 ## Optional utilities
 

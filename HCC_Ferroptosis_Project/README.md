@@ -40,6 +40,7 @@ Rscript scripts_final/12_modelgene_boltz2_supplement.R
 ## Notes
 - Some file names retain legacy suffixes (for backward compatibility with earlier script interfaces).
 - The authoritative execution entrypoint is `scripts_final/run_complete_pipeline.R`.
+- `data/processed/` is generated locally and intentionally not tracked in the public repository.
 
 ## License
 MIT License (`../LICENSE`).

@@ -11,7 +11,7 @@ This repository provides a reproducible analysis pipeline for a ferroptosis-rela
 - `HCC_Ferroptosis_Project/data/references/`: curated reference inputs required by the pipeline.
 - `docs/`: reproducibility, data acquisition, and repository scope notes.
 
-Large raw downloads (GEO/TCGA) and large third-party matrices are intentionally not versioned. See `docs/data-acquisition.md`.
+Large source datasets and rebuilt intermediate objects are intentionally not versioned. See `docs/data-acquisition.md`.
 
 ## Quick start
 
@@ -23,6 +23,10 @@ Large raw downloads (GEO/TCGA) and large third-party matrices are intentionally 
 3. Check expected input layout:
    - `HCC_Ferroptosis_Project/DATA_MANIFEST.md`
    - `HCC_Ferroptosis_Project/data/references/README_DATA_SOURCES.md`
+
+## Data download links
+
+Source download links are documented in `docs/data-acquisition.md`, including GEO accessions, GDC TCGA-LIHC, HCCDB, FerrDb, and GDSC.
 
 ## Notes
 

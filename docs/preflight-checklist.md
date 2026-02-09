@@ -16,5 +16,5 @@
 
 ## Size / licensing
 
-- Do not push large raw downloads (`data/raw/`, `GDCdata/`) or large third-party matrices (e.g., GDSC).
+- Do not push large raw downloads (`data/raw/`, `GDCdata/`), rebuilt intermediates (`data/processed/`), or large third-party matrices (e.g., GDSC).
 - If you need to share large archives, use GitHub Releases or an archival repository (Zenodo/OSF) and link from `README.md`.

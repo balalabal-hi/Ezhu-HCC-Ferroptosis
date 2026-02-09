@@ -38,6 +38,7 @@
 ## Omitted from Git
 
 - Large raw downloads: `HCC_Ferroptosis_Project/data/raw/`, `HCC_Ferroptosis_Project/GDCdata/`
+- Rebuilt intermediate objects: `HCC_Ferroptosis_Project/data/processed/`
 - Large third-party matrices: `HCC_Ferroptosis_Project/data/references/GDSC/`
 - Local curation dumps: `HCC_Ferroptosis_Project/data/references/raw/`
 - Local API response caches: `HCC_Ferroptosis_Project/results/boltz2_responses/`, `HCC_Ferroptosis_Project/results/boltz2_failures/`
