@@ -1,150 +1,142 @@
 #!/usr/bin/env Rscript
 
 # 07b_fig1_jimr_workflow.R
-# JIMR-friendly workflow schematic (no TCM / docking layer).
-#
-# Outputs:
-# - plots/publication/JIMR_Figure1_workflow.pdf
-# - plots/publication/JIMR_Figure1_workflow.png
-#
-# Usage:
-#   Rscript scripts_final/07b_fig1_jimr_workflow.R
+# Rebuild Figure 1 as a publication-ready study-design workflow for JIMR.
 
 if (!interactive()) pdf(NULL)
 
 suppressPackageStartupMessages({
   library(ggplot2)
+  library(grid)
 })
 
 detect_base_dir <- function() {
-  candidates <- c(".", "Ezhu_HCC_Project")
+  candidates <- c(".", "HCC_Ferroptosis_Project", "Ezhu_HCC_Project")
   for (d in candidates) {
-    if (dir.exists(file.path(d, "results")) && dir.exists(file.path(d, "plots")) && dir.exists(file.path(d, "data/processed"))) return(d)
+    if (dir.exists(file.path(d, "results")) && dir.exists(file.path(d, "plots"))) {
+      return(d)
+    }
   }
   stop("Cannot locate project root.")
 }
 
+locate_submission_dir <- function(base_dir) {
+  candidates <- c(
+    file.path(base_dir, "..", "docs", "submissions", "JIMR"),
+    file.path(base_dir, "docs", "submissions", "JIMR"),
+    "docs/submissions/JIMR",
+    "../docs/submissions/JIMR",
+    "../../docs/submissions/JIMR"
+  )
+  for (p in candidates) {
+    if (dir.exists(p)) return(normalizePath(p, mustWork = FALSE))
+  }
+  NULL
+}
+
 base_dir <- detect_base_dir()
-pub_dir <- file.path(base_dir, "plots/publication")
+pub_dir <- file.path(base_dir, "plots", "publication")
 dir.create(pub_dir, showWarnings = FALSE, recursive = TRUE)
 
-mk_box <- function(xc, yc, w, h, label, fill, border, text_size = 3.4, text_face = "plain") {
-  list(
-    rect = data.frame(
-      xmin = xc - w / 2,
-      xmax = xc + w / 2,
-      ymin = yc - h / 2,
-      ymax = yc + h / 2,
-      fill = fill,
-      border = border
-    ),
-    text = data.frame(
-      x = xc,
-      y = yc,
-      label = label,
-      size = text_size,
-      face = text_face
-    )
-  )
-}
+submission_dir <- locate_submission_dir(base_dir)
 
-mk_arrow <- function(x1, y1, x2, y2) {
-  data.frame(x = x1, y = y1, xend = x2, yend = y2)
-}
+clr_bg <- "#FBFCFE"
+clr_header <- "#1F4E79"
+clr_body <- "#FFFFFF"
+clr_border <- "#AEBFCB"
+clr_text <- "#24323D"
+clr_arrow <- "#4A647A"
 
-boxes <- list()
-
-# Colors
-fill_title <- "#E6ECEE"
-fill_body <- "#F4F7F8"
-border <- "#A8B6BA"
-arrow_col <- "#6B7C81"
-
-# 1. Data & Resources
-boxes[[1]] <- mk_box(0.20, 0.935, 0.34, 0.08, "1. Data & Resources", fill_title, border, text_size = 4.2, text_face = "bold")
-boxes[[2]] <- mk_box(
-  0.20, 0.80, 0.34, 0.22,
-  "Discovery:\nGEO GSE14520 (tumor vs non-tumor; OS)\n\nExternal validation:\nTCGA-LIHC; GEO GSE76427; GSE10143-HCC; GSE27150\n\nFerroptosis reference:\nFerrDb (curated)",
-  fill_body, border, text_size = 3.2
+modules <- data.frame(
+  id = c("M1", "M2", "M3", "M4", "M5", "M6"),
+  x = c(0.24, 0.76, 0.50, 0.24, 0.76, 0.50),
+  y = c(0.84, 0.84, 0.60, 0.35, 0.35, 0.11),
+  w = c(0.44, 0.44, 0.94, 0.44, 0.44, 0.94),
+  h = c(0.205, 0.205, 0.175, 0.215, 0.215, 0.135),
+  header_h = c(0.045, 0.045, 0.042, 0.045, 0.045, 0.038),
+  title = c(
+    "1. Cohorts and Reference Data",
+    "2. Candidate Gene Derivation",
+    "3. Prognostic Signature Training",
+    "4. External Validation",
+    "5. Clinical and Biological Interpretation",
+    "6. Translational Message"
+  ),
+  body = c(
+    "Discovery cohort: GSE14520 (n=221; OS)\nExternal cohorts: TCGA-LIHC, ICGC-LIRI-JP,\nGEO (GSE76427/GSE10143/GSE27150)\nFerroptosis reference: FerrDb V2",
+    "Differential expression in GSE14520 (limma)\nHCC-specific ferroptosis set: FerrDb genes\nfiltered by DEG significance (FDR < 0.05)\nFinal modeling candidate set: 125 genes",
+    "Univariate Cox and LASSO-Cox (10-fold CV)\nNine-gene fixed-coefficient risk score\nInternal evaluation: KM survival,\ntime-dependent ROC (1/3/5 years), bootstrap C-index",
+    "Testing in TCGA-LIHC, ICGC-LIRI-JP,\nand GEO cohorts\nMetrics: C-index, time-dependent AUC,\n3-year calibration, IPCW Brier\nRobustness: PH checks, RMST, random-signature benchmark",
+    "Clinical utility: multivariable Cox,\nnomogram, decision-curve analysis\nBiological context: immune signatures,\ncheckpoints, TIDE, GDSC2, docking",
+    "Integrated findings support HCC risk stratification\nand therapeutic hypothesis generation.\nA reproducible framework for prospective validation."
+  ),
+  body_size = c(3.9, 3.9, 3.95, 3.55, 3.7, 3.9),
+  stringsAsFactors = FALSE
 )
 
-# 2. HCC-context landscape
-boxes[[3]] <- mk_box(0.73, 0.935, 0.54, 0.08, "2. HCC-context Ferroptosis Landscape", fill_title, border, text_size = 4.2, text_face = "bold")
-boxes[[4]] <- mk_box(
-  0.73, 0.80, 0.54, 0.22,
-  "Differential expression (limma):\ntumor vs non-tumor in GSE14520\n\nHCC-context ferroptosis candidates:\nFerrDb genes filtered by DEG (FDR < 0.05)\n→ 125 candidates",
-  fill_body, border, text_size = 3.2
-)
+modules$xmin <- modules$x - modules$w / 2
+modules$xmax <- modules$x + modules$w / 2
+modules$ymin <- modules$y - modules$h / 2
+modules$ymax <- modules$y + modules$h / 2
+modules$body_ymax <- modules$ymax - modules$header_h
+modules$header_y <- (modules$body_ymax + modules$ymax) / 2
+modules$body_y <- (modules$ymin + modules$body_ymax) / 2
 
-# 3. Prognostic signature
-boxes[[5]] <- mk_box(0.50, 0.655, 0.90, 0.08, "3. Prognostic Signature (Discovery → Validation)", fill_title, border, text_size = 4.2, text_face = "bold")
-boxes[[6]] <- mk_box(
-  0.50, 0.51, 0.90, 0.20,
-  "Univariate Cox screening → LASSO-Cox (10-fold CV) → 9-gene signature\n\nPerformance: KM survival; time-dependent ROC (1/3/5 years); bootstrap validation\n\nExternal validation: TCGA-LIHC and independent GEO cohorts",
-  fill_body, border, text_size = 3.2
-)
-
-# 4. Clinical utility
-boxes[[7]] <- mk_box(0.20, 0.385, 0.34, 0.08, "4. Clinical Utility", fill_title, border, text_size = 4.2, text_face = "bold")
-boxes[[8]] <- mk_box(
-  0.20, 0.26, 0.34, 0.16,
-  "Univariate & multivariate Cox\n\nNomogram:\nrisk score + available clinical variables\n\nDecision curve analysis (3-year)",
-  fill_body, border, text_size = 3.2
-)
-
-# 5. Immune context
-boxes[[9]] <- mk_box(0.73, 0.385, 0.54, 0.08, "5. Immune Context (Exploratory)", fill_title, border, text_size = 4.2, text_face = "bold")
-boxes[[10]] <- mk_box(
-  0.73, 0.26, 0.54, 0.16,
-  "Immune infiltration:\nssGSEA (immune signatures)\n\nImmune checkpoints:\ndifferential expression (High vs Low risk)\n\nTherapeutic response inference:\nTIDE (exploratory)",
-  fill_body, border, text_size = 3.2
-)
-
-# 6. Calibration & robustness
-boxes[[11]] <- mk_box(0.50, 0.115, 0.90, 0.08, "6. Calibration & Robustness", fill_title, border, text_size = 4.2, text_face = "bold")
-boxes[[12]] <- mk_box(
-  0.50, 0.035, 0.90, 0.10,
-  "Calibration: internal bootstrap; external 3-year calibration (discovery baseline hazard)\nPrediction error: Brier score (IPCW)\nDiagnostics: PH test; RMST (60 months); random-signature sanity check",
-  fill_body, border, text_size = 3.2
-)
-
-rect_df <- do.call(rbind, lapply(boxes, `[[`, "rect"))
-text_df <- do.call(rbind, lapply(boxes, `[[`, "text"))
-
-arrows <- rbind(
-  mk_arrow(0.37, 0.80, 0.46, 0.80),
-  mk_arrow(0.73, 0.69, 0.60, 0.60),
-  mk_arrow(0.50, 0.41, 0.37, 0.34),
-  mk_arrow(0.50, 0.41, 0.63, 0.34),
-  mk_arrow(0.50, 0.41, 0.50, 0.16)
+arrows <- data.frame(
+  x = c(0.43, 0.70, 0.40, 0.60, 0.33, 0.67),
+  y = c(0.84, 0.73, 0.50, 0.50, 0.25, 0.25),
+  xend = c(0.57, 0.55, 0.28, 0.72, 0.44, 0.56),
+  yend = c(0.84, 0.67, 0.46, 0.46, 0.17, 0.17)
 )
 
 p <- ggplot() +
+  annotate("rect", xmin = 0, xmax = 1, ymin = 0, ymax = 1, fill = clr_bg, color = NA) +
   geom_rect(
-    data = rect_df,
-    aes(xmin = xmin, xmax = xmax, ymin = ymin, ymax = ymax),
-    fill = rect_df$fill,
-    color = rect_df$border,
-    linewidth = 0.6
+    data = modules,
+    aes(xmin = xmin, xmax = xmax, ymin = ymin, ymax = body_ymax),
+    fill = clr_body, color = clr_border, linewidth = 0.7
   ) +
+  geom_rect(
+    data = modules,
+    aes(xmin = xmin, xmax = xmax, ymin = body_ymax, ymax = ymax),
+    fill = clr_header, color = clr_header, linewidth = 0.7
+  ) +
+  geom_text(
+    data = modules,
+    aes(x = x, y = header_y, label = title),
+    color = "white", fontface = "bold", size = 4.55, lineheight = 1.0
+  ) +
+  geom_text(
+    data = modules,
+    aes(x = x, y = body_y, label = body, size = body_size),
+    color = clr_text, lineheight = 1.11, show.legend = FALSE
+  ) +
+  scale_size_identity() +
   geom_segment(
     data = arrows,
     aes(x = x, y = y, xend = xend, yend = yend),
-    color = arrow_col,
-    linewidth = 0.8,
-    arrow = grid::arrow(length = grid::unit(0.02, "npc"), type = "closed")
+    color = clr_arrow, linewidth = 0.9,
+    arrow = arrow(length = unit(0.22, "cm"), type = "closed")
   ) +
-  geom_text(
-    data = text_df,
-    aes(x = x, y = y, label = label),
-    size = text_df$size,
-    fontface = text_df$face,
-    lineheight = 1.05
+  annotate(
+    "text", x = 0.5, y = 0.985,
+    label = "Overview of Study Design and Validation Strategy",
+    color = "#173A5C", fontface = "bold", size = 6.2
   ) +
-  coord_fixed(xlim = c(0, 1), ylim = c(0, 1), expand = FALSE) +
+  coord_fixed(xlim = c(0, 1), ylim = c(0, 1), expand = FALSE, clip = "off") +
   theme_void() +
-  theme(plot.background = element_rect(fill = "white", color = NA))
+  theme(plot.margin = margin(8, 16, 8, 16))
 
-ggsave(file.path(pub_dir, "JIMR_Figure1_workflow.pdf"), p, width = 13.33, height = 7.5, device = cairo_pdf)
-ggsave(file.path(pub_dir, "JIMR_Figure1_workflow.png"), p, width = 13.33, height = 7.5, dpi = 300, bg = "white")
-message("✅ Saved: plots/publication/JIMR_Figure1_workflow (PDF+PNG)")
+out_pdf <- file.path(pub_dir, "JIMR_Figure1_workflow.pdf")
+out_png <- file.path(pub_dir, "JIMR_Figure1_workflow.png")
+
+ggsave(out_pdf, p, width = 13.5, height = 8.5, device = cairo_pdf, bg = "white")
+ggsave(out_png, p, width = 13.5, height = 8.5, dpi = 350, bg = "white")
+
+if (!is.null(submission_dir)) {
+  file.copy(out_png, file.path(submission_dir, "JIMR_Figure1_workflow.png"), overwrite = TRUE)
+  file.copy(out_pdf, file.path(submission_dir, "JIMR_Figure1_workflow.pdf"), overwrite = TRUE)
+  message("Copied updated Figure 1 to submission folder: ", submission_dir)
+}
+
+message("Figure 1 workflow updated: ", out_png)
