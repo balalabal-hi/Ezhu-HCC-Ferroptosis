@@ -1,27 +1,33 @@
-# Ezhu–Ferroptosis–HCC (Reproducible Analysis Package)
+# HCC-Ferroptosis-Signature
 
-This repository contains the analysis scripts and derived outputs for the study of *Curcuma phaeocaulis* (Ezhu) target-guided ferroptosis landscape and prognostic modeling in hepatocellular carcinoma (HCC).
+This repository provides a reproducible analysis pipeline for a ferroptosis-related prognostic signature in hepatocellular carcinoma (HCC), including multi-cohort validation, immune-context analysis, therapeutic response inference, and exploratory docking context.
 
-## What is in this repository
+## Repository structure
 
-- `Ezhu_HCC_Project/scripts_final/`: end-to-end analysis scripts (R + a small amount of Python for docking task preparation)
-- `Ezhu_HCC_Project/results/`: derived tables used in the manuscript (model coefficients, risk scores, external validation summaries, docking summaries, etc.)
-- `Ezhu_HCC_Project/plots/publication/`: final Figure 2–6 panels (PDF/PNG/TIFF as available)
-- `Ezhu_HCC_Project/data/references/`: small, curated reference inputs required by the pipeline (gene lists, target lists, docking ligand metadata)
-- `docs/`: notes on data acquisition and reproducibility
+- `HCC_Ferroptosis_Project/scripts_final/`: end-to-end analysis scripts (R + small Python utilities).
+- `HCC_Ferroptosis_Project/results/`: derived result tables used in the manuscript.
+- `HCC_Ferroptosis_Project/plots/publication/`: main figure panels.
+- `HCC_Ferroptosis_Project/plots/supplementary/`: supplementary figure panels.
+- `HCC_Ferroptosis_Project/data/references/`: curated reference inputs required by the pipeline.
+- `docs/`: reproducibility, data acquisition, and repository scope notes.
 
-Raw downloads (e.g., GEO series matrix files, TCGA raw downloads, large pharmacogenomic matrices) are not included due to size and/or redistribution constraints. See `docs/data-acquisition.md`.
+Large raw downloads (GEO/TCGA) and large third-party matrices are intentionally not versioned. See `docs/data-acquisition.md`.
 
-## Quick orientation
+## Quick start
 
-- For a read-only verification of the main outputs, start from:
-  - `Ezhu_HCC_Project/plots/publication/`
-  - `Ezhu_HCC_Project/results/`
-- For a full rerun (network + compute required), see `docs/reproducibility.md`.
-- For dataset placement and expected filenames, use:
-  - `Ezhu_HCC_Project/DATA_MANIFEST.md`
-  - `Ezhu_HCC_Project/data/references/README_DATA_SOURCES.md`
+1. Review outputs directly:
+   - `HCC_Ferroptosis_Project/results/`
+   - `HCC_Ferroptosis_Project/plots/publication/`
+2. Re-run from source data:
+   - `docs/reproducibility.md`
+3. Check expected input layout:
+   - `HCC_Ferroptosis_Project/DATA_MANIFEST.md`
+   - `HCC_Ferroptosis_Project/data/references/README_DATA_SOURCES.md`
+
+## Notes
+
+- Some filenames and column names retain legacy suffixes (for backward compatibility with earlier scripts), but the current analysis branch is the authoritative version.
 
 ## License
 
-Code in this repository is released under the MIT License (see `LICENSE`).
+MIT License (`LICENSE`).

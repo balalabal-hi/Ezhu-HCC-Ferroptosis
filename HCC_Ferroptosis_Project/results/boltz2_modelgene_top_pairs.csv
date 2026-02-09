@@ -1,0 +1,3 @@
+"Protein","Ligand","Affinity_Pred_Value","Affinity_pIC50","Affinity_Prob","Confidence","Endpoint","Status"
+"ENO1","Curdione",0.52734375,7.464703125,0.5703125,0.564245700836182,NA,"OK"
+"SLC27A5","(2S)-3',4'-Methylenedioxy-5,7-dimethoxyflavan",0.69140625,7.240921875,0.45703125,0.385171502828598,NA,"OK"

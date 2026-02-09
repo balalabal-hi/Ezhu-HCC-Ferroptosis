@@ -8,16 +8,16 @@
 *.pem
 
 # Large raw inputs (not tracked)
-Ezhu_HCC_Project/data/raw/
-Ezhu_HCC_Project/GDCdata/
+HCC_Ferroptosis_Project/data/raw/
+HCC_Ferroptosis_Project/GDCdata/
 
 # Large third-party references (not tracked)
-Ezhu_HCC_Project/data/references/GDSC/
-Ezhu_HCC_Project/data/references/raw/
+HCC_Ferroptosis_Project/data/references/GDSC/
+HCC_Ferroptosis_Project/data/references/raw/
 
 # Optional local caches / API responses
-Ezhu_HCC_Project/results/boltz2_responses/
-Ezhu_HCC_Project/results/boltz2_failures/
+HCC_Ferroptosis_Project/results/boltz2_responses/
+HCC_Ferroptosis_Project/results/boltz2_failures/
 
 # Local R / Python artifacts
 *.Rhistory
@@ -25,3 +25,5 @@ Ezhu_HCC_Project/results/boltz2_failures/
 __pycache__/
 *.pyc
 
+# Local submission packages (not required for reproducible analysis repo)
+docs/submissions/

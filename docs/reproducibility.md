@@ -1,35 +1,38 @@
-# Reproducibility notes
+# Reproducibility guide
 
-Two practical ways to use this repository are:
+## Mode A: output audit (no re-run)
 
-## Mode A: Audit / read-only verification
+Use this mode to verify reported results from included outputs.
 
-Use this mode to inspect the exact derived tables and figure panels used for reporting.
+- Main figures: `HCC_Ferroptosis_Project/plots/publication/`
+- Supplementary figures: `HCC_Ferroptosis_Project/plots/supplementary/`
+- Derived tables: `HCC_Ferroptosis_Project/results/`
 
-- Main figures: `Ezhu_HCC_Project/plots/publication/`
-- Derived tables: `Ezhu_HCC_Project/results/`
-- Figure-to-file mapping: `Ezhu_HCC_Project/FIGURE_LIST.md`
+## Mode B: full pipeline re-run
 
-## Mode B: Full rerun (from downloads)
+1. Enter project directory:
+- `cd HCC_Ferroptosis_Project`
 
-This mode re-runs the pipeline end-to-end and regenerates the figure panels.
-
-1) Enter the project directory:
-- `cd Ezhu_HCC_Project`
-
-2) Install required R packages:
+2. Install required R packages:
 - `Rscript scripts_final/00_setup_env.R`
 
-3) Prepare required raw/reference inputs:
+3. Prepare raw/reference inputs:
 - Follow `DATA_MANIFEST.md` and `docs/data-acquisition.md`.
 
-4) Run the full pipeline:
+4. Run end-to-end pipeline:
 - `Rscript scripts_final/run_complete_pipeline.R`
 
 Expected outputs:
-- `results/` (tables)
-- `plots/publication/` (Figure 2–6)
-- `plots/supplementary/` (supplementary panels)
+- `results/`
+- `plots/publication/`
+- `plots/supplementary/`
 
-Optional (Supplementary robustness checks):
-- `Rscript scripts_final/02h_model_diagnostics.R`
+## Optional utilities
+
+- Regenerate Figure 1 workflow: `Rscript scripts_final/07b_fig1_jimr_workflow.R`
+- Regenerate Figure 2 panel: `Rscript scripts_final/07a_fig2_jimr_deg_ferroptosis.R`
+- Regenerate model-gene docking supplement: `Rscript scripts_final/12_modelgene_boltz2_supplement.R`
+
+## Notes
+
+- Docking affinity API calls are optional and require `NVIDIA_API_KEY` in the shell environment.
